@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs';
 import {
   HttpClient,
   HttpHeaders,
@@ -8,11 +8,6 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-
-    
-        
-          
-  
 //Declaring the api url that will provide data for the client app
 const apiUrl = 'https://movies-api-db.herokuapp.com/';
 
@@ -28,22 +23,12 @@ const headers = {
   providedIn: 'root',
 })
 export class FetchApiDataService {
-
-    
-          
-            
-    
-
-          
-          
-            
-    
-
   // Inject the HttpClient module to the constructor params
   // This will provide HttpClient to the entire class, making it available via this.http
   constructor(private http: HttpClient) {
     this.http = http;
   }
+
   private handleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -54,11 +39,13 @@ export class FetchApiDataService {
     }
     return throwError('Something bad happened; please try again later.');
   }
+
   // Non-typed response extraction
   private extractResponseData(res: any): any {
     const body = res;
     return body || {};
   }
+
   /**
    * Calls the user registration endpoint
    * @function userRegistration
@@ -71,6 +58,7 @@ export class FetchApiDataService {
       .post(apiUrl + 'users/register', userDetails)
       .pipe(catchError(this.handleError));
   }
+
   /**
    * Calls the /login endpoint
    * @function userLogin
@@ -87,6 +75,7 @@ export class FetchApiDataService {
       )
       .pipe(catchError(this.handleError));
   }
+
   /**
    * Calls the /movies endpoint
    * @function getAllMovies
@@ -95,11 +84,13 @@ export class FetchApiDataService {
   public getAllMovies(): Observable<any> {
     //this has type Observable
     const response = this.http.get(apiUrl + 'catalog/movies', headers);
+
     return response.pipe(
       map(this.extractResponseData),
       catchError(this.handleError)
     );
   }
+
   /**
    * Calls the /catalog/genres endpoint
    * @function getAllGenres
@@ -112,6 +103,7 @@ export class FetchApiDataService {
       catchError(this.handleError)
     );
   }
+
   /**
    * Calls the /catalog/actors endpoint
    * @function getAllActors
@@ -124,6 +116,7 @@ export class FetchApiDataService {
       catchError(this.handleError)
     );
   }
+
   /**
    * Calls the /catalog/directors endpoint
    * @function getAllActors
@@ -136,6 +129,7 @@ export class FetchApiDataService {
       catchError(this.handleError)
     );
   }
+
   /**
    * Calls the /movies/:movieTitle endpoint
    * @function getMovie
@@ -152,6 +146,7 @@ export class FetchApiDataService {
       catchError(this.handleError)
     );
   }
+
   /**
    * Calls the /directors/:directornName endpoint
    * @function getDirector
@@ -168,6 +163,7 @@ export class FetchApiDataService {
       catchError(this.handleError)
     );
   }
+
   /**
    * Calls the /genres/:genreName endpoint
    * @function getGenre
@@ -184,6 +180,7 @@ export class FetchApiDataService {
       catchError(this.handleError)
     );
   }
+
   /**
    * Calls the /users/:username endpoint
    * @function getUser
@@ -195,21 +192,9 @@ export class FetchApiDataService {
     return response.pipe(
       map(this.extractResponseData),
       catchError(this.handleError)
-
-    
-          
-            
-    
-
-          
-          
-            
-    
-
-          
- 
     );
   }
+
   /**
    * Calls the /users/username/favorites endpoint
    * @function getFavMovies
@@ -226,6 +211,7 @@ export class FetchApiDataService {
       catchError(this.handleError)
     );
   }
+
   /**
    * Calls the /:users/username/favorites endpoint
    * @function getWatchlist
@@ -242,6 +228,7 @@ export class FetchApiDataService {
       catchError(this.handleError)
     );
   }
+
   /**
    * Calls the PUT /users/:username/favorites/:movieId endpoint
    * @function addToFav
@@ -256,6 +243,7 @@ export class FetchApiDataService {
     );
     return response.pipe(catchError(this.handleError));
   }
+
   /**
    * Calls the PUT /users/:username/favorites/:movieId endpoint
    * @function addToWatchlist
@@ -270,6 +258,7 @@ export class FetchApiDataService {
     );
     return response.pipe(catchError(this.handleError));
   }
+
   /**
    * Calls the DELETE /users/:username/favorites/:movieId endpoint
    * @function removeFromFav
@@ -284,6 +273,7 @@ export class FetchApiDataService {
     );
     return response.pipe(catchError(this.handleError));
   }
+
   /**
    * Calls the DELETE /users/:username/favorites/:movieId endpoint
    * @function removeFromWatchlist
@@ -301,6 +291,7 @@ export class FetchApiDataService {
     );
     return response.pipe(catchError(this.handleError));
   }
+
   /**
    * Calls the /users/:username/deregister endpoint
    * @function deleteUser
@@ -314,6 +305,7 @@ export class FetchApiDataService {
     );
     return response.pipe(catchError(this.handleError));
   }
+
   /**
    * Calls the PUT /users/:username
    * @function editUser
